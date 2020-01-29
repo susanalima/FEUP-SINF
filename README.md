@@ -6,9 +6,10 @@ Made in colaboration with [Gonçalo Santos](https://github.com/gregueiras), [Rit
 
 ## Specification
 
-This project consists in the development of a customizable interface to handle all the transactions between two different companies. It is important to clearly show past or ongoing processes between the two companies, so that the flow between them is noticeable. 
+This project consists in the development of a Intercompany Module, integrated with Primavera’s Jasmin Platform, making use of a customizable interface to handle all the transactions between two different companies. It is important to clearly show past or ongoing processes between the two companies, so that the flow between them is noticeable. 
 The interface should host and display detailed data about all operational aspects of the transaction, such as stock, product categories, and vending platforms. 
 Another fundamental feature of the project is providing a user-friendly experience that allows the user a better understanding of the sales-purchase flow.
+
 
 More information in the [final report](https://github.com/susanalima/FEUP-SINF/blob/master/docs/4MIEIC05_G_X_DELIVERABLE2.2__FINALDOC.pdf).
 
