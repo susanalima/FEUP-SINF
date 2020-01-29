@@ -14,6 +14,8 @@ import NewProcess from './pages/NewProcess';
 import CreateProcessType from './pages/CreateProcessType';
 import MasterData from './pages/MasterData';
 import Settings from './pages/Settings';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 import 'react-table/react-table.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -24,13 +26,13 @@ const App = () => (
     <Router>
       <div className="App">
         <Switch>
-          <Route exact path="/" exact>
+          <Route exact path="/">
             <Overview />
           </Route>
           <Route path="/logs" exact>
             <Logs />
           </Route>
-          <Route path="/view-process" exact>
+          <Route path="/view-process/:id" exact>
             <ViewProcess />
           </Route>
           <Route path="/new-process" exact>
@@ -44,6 +46,12 @@ const App = () => (
           </Route>
           <Route path="/settings" exact>
             <Settings />
+          </Route>
+          <Route path="/login" exact>
+            <Login />
+          </Route>
+          <Route path="/register" exact>
+            <Register />
           </Route>
         </Switch>
       </div>

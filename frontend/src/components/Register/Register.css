@@ -1,0 +1,39 @@
+
+
+.loginContainer{
+    margin-top: 12em;
+    margin-bottom: 12em; 
+    padding: 2em 5em 1em 5em !important;
+    border-radius: 5px;
+    background-color: #FFD476;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 4px 4px 2px rgba(0, 0, 0, 0.1); 
+    max-width: 600px !important;
+    border-color: transparent;
+}
+
+
+.login-button {
+    padding-left: 5em !important;
+    padding-right: 5em !important;
+    margin-top: 1em;
+}
+
+.login-title {
+    color:   #2D3047;
+}
+
+.signup-link, .signup-link:hover {
+    text-decoration: none !important;
+    color: #2D3047 !important;
+}
+
+.signup-label {
+font-style: normal;
+font-weight: normal;
+font-size: 15px !important;
+line-height: 21px;
+margin-top: 1em;
+
+color: #756a6a; 
+}

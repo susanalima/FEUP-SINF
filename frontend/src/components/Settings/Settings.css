@@ -11,9 +11,23 @@
     border-color: transparent;
 }
 
+#overlay{
+    position: fixed; /* Sit on top of the page content */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 1000; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+}
+
 .organizations{
     margin-top: 2em;
 }
+
 
 .settingsFormBtns{
     text-align: right;
@@ -24,12 +38,69 @@
     margin-top: 1em;
 }
 
-.iconDelete {
-   text-align: right;
+.submitIcons {
+
+text-align: right;
+margin-top: 1.5em;
+   
+}
+.form-label {
+    margin-top: 1em;
+}
+.save-button {
+
+    margin-right: 1.2em;
+
+  }
+
+.react-confirm-alert-overlay{
+    background: rgba(133,133,133,0.8);
+}
+
+.react-confirm-alert-button-group button{
+    background-color: #2D3047;
+    font-size: 1.2em;
+    padding: 0.3em 1.5em 0.3em 1.5em;
+}
+
+.react-confirm-alert-body{
+    padding: 50px;
+    width: 500px;
 }
 
 @media (max-width: 574px) {
-    .iconDelete  {
-      margin-top:1em;
+   
+    .react-confirm-alert-body{
+        width: 300px;
     }
+
+    .blue-button{
+        margin: 0;
+    }
+
+    /* .iconDelete  {
+        margin-top:1.2em !important;
+        margin-right: 0.29em !important;
+      } */
+    .submitIcons .save-button{
+        margin-right: 0.5em;
+    }
+    
+    #settingsAlert{
+        width: 300px;
+    }
+  }
+  @media (max-width: 362px) {
+    .submitIcons .save-button{
+        margin-right: 0.05em;
+    }
+  }
+  @media (max-width: 354px) {
+        
+    .iconDelete  {
+        margin: 0;
+        margin-top:1.2em !important;
+        margin-right: 0.29 !important;
+      }
+
   }

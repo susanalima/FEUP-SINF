@@ -5,12 +5,15 @@ import Navbar from 'react-bootstrap/Navbar';
 
 import './NavBar.css';
 
-function NavBar() {
+function NavBar(props) {
+  
+  const {disableLogout} = props;
+
   return (
     <Container>
       <Row>
         <Navbar expand="lg" variant="light" fixed="top">
-          <Col xs={12} md={8} xs={8} className="logo">
+          <Col md={8} xs={8} className="logo">
             <Navbar.Brand>
               <Link to="/" className="logoTextLink">
                 <div className="logoText">
@@ -19,12 +22,14 @@ function NavBar() {
               </Link>
             </Navbar.Brand>
           </Col>
-          <Col xs={6} md={4} xs={4} id="navbarLogout">
+          <Col md={4} xs={4} id="navbarLogout">
+            {!disableLogout && (
             <Navbar.Brand>
-              <Link to="#logout" className="logoutLink">
+              <Link to="/login" className="logoutLink">
                       Logout
               </Link>
             </Navbar.Brand>
+            )}
           </Col>
         </Navbar>
       </Row>

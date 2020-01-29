@@ -8,12 +8,17 @@ class CompanySchema extends Schema {
     this.create('companies', (table) => {
       table.increments()
       table.string('name', 80).notNullable().unique();
+      table.string('tenant', 80).notNullable().unique();
+      table.string('organization', 80).notNullable();
+      table.string('clientId',80).notNullable();
+      table.string('clientSecret',80).notNullable();
+      table.string('token', 1500);
+      table.bigInteger('expires');
       table.timestamps()
     })
   }
-
   down () {
-    this.drop('companies')
+    this.drop('companies');
   }
 }
 

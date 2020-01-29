@@ -1,241 +1,216 @@
-/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/sort-comp */
+/* eslint-disable react/no-unused-state */
+/* eslint-disable max-len */
+/* eslint-disable camelcase */
+/* eslint-disable array-callback-return */
 import React, { Component } from 'react';
-import ReactTable from 'react-table';
 import { withRouter } from 'react-router-dom';
-import { Container, Row, Col } from 'react-bootstrap';
 
-import '../Overview/Overview.css';
+
+import {
+  Container, Col,
+} from 'react-bootstrap';
+import MasterDataTable from '../MasterDataTable/MasterDataTable';
+
+
 import './MasterData.css';
+import CompanyService from '../../services/CompanyService';
+import ProductService from '../../services/ProductService';
+import EntityService from '../../services/EntityService';
+
 
 class MasterData extends Component {
-
   constructor() {
     super();
-
-
     this.state = {
-      dataCompanyA: [{
-        id: 'IHA250526',
-        description: 'IRAN HAMADAN',
-      },
-      {
-        id: 'IHA250526',
-        description: 'IRAN HAMADAN',
-      },
-      {
-        id: 'IHA250526',
-        description: 'IRAN HAMADAN',
-      },
-      ], dataCompanyB: [{
-        id: 'IHA250526',
-        description: 'IRAN HAMADAN',
-      },
-      {
-        id: 'IHA250526',
-        description: 'IRAN HAMADAN',
-      },
-      {
-        id: 'IHA250526',
-        description: 'IRAN HAMADAN',
-      }],
+      dataCompanyA: [],
+      dataCompanyB: [],
+      dataCorrespondence: [],
 
-      dataCorrespondence: [
-      ],
+      companyAoptions: [],
+      companyBoptions: [],
 
-      companyAoptions: [
-        { value: '1', name: 'MetroCarpetDistributor' },
-        { value: '2', name: 'MetroCarpetFactory' },
-        { value: '3', name: 'option3' },
-        { value: '4', name: 'option4' },
+      pageIndexA: 0,
+      pageIndexB: 0,
+      company_a: '',
+      company_b: '',
+      loadingCompanyA: true,
+      loadingCompanyB: true,
+      loadingDataCorrespondence: true,
 
-      ],
-      companyBoptions: [
-        { value: '1', name: 'MetroCarpetFactory' },
-        { value: '2', name: 'MetroCarpetDistributor' },
-        { value: '3', name: 'option3' },
-        { value: '4', name: 'option4' },
-      ],
-      categoryOptions: [
-        { value: '1', name: 'Items' },
-        { value: '2', name: 'Items2' },
-        { value: '3', name: 'Items3' },
-        { value: '4', name: 'Items4' },
-      ]
+      pageSize: 10,
 
-    }
-  };
+      deletedCorrespondences: [],
+      addedCorrespondences: [],
 
-  addIdToDataCorrespondenceA(e, id) {
-    e.preventDefault();
-    let position = -1;
-    this.state.dataCorrespondence.map((data, sidx) => {
-      if (data.idA === null && position === -1) {
-        position = sidx;
-      }
-    });
-    if (position === -1)
-      this.state.dataCorrespondence.push({ idA: id, idB: null });
-    else this.state.dataCorrespondence[position].idA = id;
+      show: false,
+      showVariant: '',
+      showText: '',
 
-    this.setState({
-      dataCompanyA: this.state.dataCompanyA, dataCompanyB: this.state.dataCompanyB,
-      dataCorrespondence: this.state.dataCorrespondence, companyAoptions: this.state.companyAoptions,
-      companyBoptions: this.state.companyBoptions, categoryOptions: this.state.categoryOptions
-    });
+      category: 'items',
+    };
 
+    this.CompanyService = new CompanyService();
+    this.ProductService = new ProductService();
+    this.EntityService = new EntityService();
 
+    this.onFetchDataCompanyBItems = this.onFetchDataCompanyBItems.bind(this);
+    this.onFetchDataCompanyAItems = this.onFetchDataCompanyAItems.bind(this);
+    this.onFetchDataCorrespondanceItems = this.onFetchDataCorrespondanceItems.bind(this);
+    this.updateCorrespondenceItems = this.updateCorrespondenceItems.bind(this);
+
+    this.onFetchDataCompanyAParties = this.onFetchDataCompanyAParties.bind(this);
+    this.onFetchDataCompanyBParties = this.onFetchDataCompanyBParties.bind(this);
+    this.onFetchDataCorrespondanceParties = this.onFetchDataCorrespondanceParties.bind(this);
+    this.updateCorrespondenceParties = this.updateCorrespondenceParties.bind(this);
 
   }
 
-  addIdToDataCorrespondenceB(e, id) {
-    e.preventDefault();
-    let position = -1;
-    this.state.dataCorrespondence.map((data, sidx) => {
-      if (data.idB === null && position === -1) {
-        position = sidx;
+  onFetchDataCorrespondanceItems(companyAId, companyBId, callback) {
+    this.ProductService.getCorrespondence(companyAId, companyBId,
+      (response) => {
+        const dataCorrespondence = response.data.map((item) => (
+          { id: item.id, id_company_a: item.id_company_a, id_company_b: item.id_company_b }
+        ));
+        callback(dataCorrespondence);
+      });
+  }
 
+  onFetchDataCompanyAItems(page, callback, value = null) {
+    const { company_a } = this.state;
+    let cA = company_a;
+    if (value !== null && value !== company_a) { cA = value; }
+    this.ProductService.getAllItems( cA, (response) => {
+      if (response.status === 200) {
+        const { data } = response;
+        const dataCompanyA = data.map((item) => (
+          { id: item.itemKey, description: item.description }
+        ));
+        callback(dataCompanyA);
       }
     });
-    if (position === -1)
-      this.state.dataCorrespondence.push({ idA: null, idB: id });
-    else this.state.dataCorrespondence[position].idB = id;
-
-    this.setState({
-      dataCompanyA: this.state.dataCompanyA, dataCompanyB: this.state.dataCompanyB,
-      dataCorrespondence: this.state.dataCorrespondence, companyAoptions: this.state.companyAoptions,
-      companyBoptions: this.state.companyBoptions, categoryOptions: this.state.categoryOptions
-    });
-
-
-
-
   }
+
+  onFetchDataCompanyBItems(page, callback, value = null) {
+    const { company_b } = this.state;
+    let cB = company_b;
+    if (value !== null && value !== company_b) { cB = value; }
+    this.ProductService.getAllItems( cB, (response) => {
+      if (response.status === 200) {
+        const { data } = response;
+        const dataCompanyB = data.map((item) => (
+          { id: item.itemKey, description: item.description }
+        ));
+        callback(dataCompanyB);
+      }
+    });
+  }
+
+  updateCorrespondenceItems(filtered, deletedCorrespondences, callback) {
+    this.ProductService.updateCorrespondence(
+      filtered,
+      deletedCorrespondences,
+      (response) => {
+        callback(response);
+      },
+    );
+  }
+
+
+  onFetchDataCorrespondanceParties(companyAId, companyBId, callback) {
+    this.EntityService.getCorrespondence(companyAId, companyBId,
+      (response) => {
+        const dataCorrespondence = response.data.map((item) => (
+          { id: item.id, id_company_a: item.id_company_a, id_company_b: item.id_company_b }
+        ));
+        callback(dataCorrespondence);
+      });
+  }
+
+  onFetchDataCompanyAParties(pageIndex, callback, value = null) {
+    const cA = value;
+    this.EntityService.getPurchaserParties(cA, (response) => {
+      if (response.status === 200) {
+        const { data } = response;
+        const dataCompanyA = data.map((item) => (
+          { id: item.partyKey, description: item.name }
+        ));
+        callback(dataCompanyA);
+      }
+    });
+  }
+
+  onFetchDataCompanyBParties(pageIndex, callback, value = null) {
+    const cB = value;
+    this.EntityService.getSupplierParties(cB, (response) => {
+      if (response.status === 200) {
+        const { data } = response;
+        const dataCompanyB = data.map((item) => (
+          { id: item.partyKey, description: item.name }
+        ));
+        callback(dataCompanyB);
+      }
+    });
+  }
+
+  updateCorrespondenceParties(filtered, deletedCorrespondences, callback) {
+    this.EntityService.updateCorrespondence(
+      filtered,
+      deletedCorrespondences,
+      (response) => {
+        callback(response);
+      },
+    );
+  }
+
+
   render() {
+    const { category } = this.state;
     return (
       <Container>
-        <Row>
-          <Col md={4}>
-            <div className="gray-label"> Category </div>
-            <select
-              className="selector category-selector pos-lt rel-text-white"
-              name="category"
-            >
-              {this.state.categoryOptions.map((e, key) => (
-                <option key={key} value={e.value}>
-                  {e.name}
-                </option>
-              ))}
-            </select>
-          </Col>
-        </Row>
-        <Row id="companySelectorsRow">
-          <Col md={4}>
-            <div className="gray-label"> Company A </div>
-            <select
-              className="selector company-selector pos-lt rel-text-white"
-              name="companyA"
-            >
-              {this.state.companyAoptions.map((e, key) => (
-                <option key={key} value={e.value}>
-                  {e.name}
-                </option>
-              ))}
-            </select>
-          </Col>
-          <Col md={{ span: 4, offset: 4 }}>
-            <div className="gray-label"> Company B </div>
-            <select
-              className="selector company-selector pos-rt rel-text-white"
-              name="companyB"
-            >
-              {this.state.companyBoptions.map((e, key) => (
-                <option key={key} value={e.value}>
-                  {e.name}
-                </option>
-              ))}
-            </select>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <div className="reactTable">
-              <div className="gray-label"> Company A Products </div>
-              <ReactTable
-                data={this.state.dataCompanyA
-                }
-                columns={[
-                  {
-                    Header: 'ID',
-                    accessor: 'id',
-                    Cell: ({ row }) => (
-                      <button onClick={e => this.addIdToDataCorrespondenceA(e, row.id)}>
-                        {row.id}
-                      </button>
-                    )
-                  },
-                  {
-                    Header: 'Description',
-                    accessor: 'description',
-                  }
-                ]}
-                defaultPageSize={10}
-                className="-striped -highlight"
-              />
-              <br />
-            </div>
-          </Col>
-          <Col>
-            <div className="reactTable">
-              <div className="gray-label"> ID Correspondence </div>
-              <ReactTable
-                data={this.state.dataCorrespondence}
-                columns={[
-                  {
-                    Header: 'ID - A',
-                    accessor: 'idA',
-                  },
-                  {
-                    Header: 'ID - B',
-                    accessor: 'idB',
-                  }
-                ]}
-                defaultPageSize={10}
-                className="-striped -highlight"
-              />
-              <br />
-            </div>
-          </Col>
-          <Col>
-            <div className="reactTable">
-              <div className="gray-label"> Company B Products </div>
-              <ReactTable
-                data={this.state.dataCompanyB}
-                columns={[
-                  {
-                    Header: 'ID',
-                    accessor: 'id',
-                    Cell: ({ row }) => (
-                      <button onClick ={e => this.addIdToDataCorrespondenceB(e, row.id)}>
-                        {row.id}
-                      </button>
-                    )
-                  },
-                  {
-                    Header: 'Description',
-                    accessor: 'description',
-                  }
-                ]}
-                defaultPageSize={10}
-                className="-striped -highlight"
-              />
-              <br />
-            </div>
-          </Col>
-        </Row>
+        <Col md={4} className="mb-6">
+          <div className="gray-label"> Category </div>
+          <select
+            className="selector company-selector pos-lt rel-text-white"
+            name="company_a"
+            onChange={(e) => {
+              e.preventDefault();
+              this.setState({ category: e.target.value });
+            }}
+          >
+            <option value="items">items</option>
+            <option value="entities">entities</option>
+          </select>
+        </Col>
+
+        {category === 'items' ? (
+          <MasterDataTable
+            onFetchDataCompanyA={this.onFetchDataCompanyAItems}
+            onFetchDataCorrespondance={this.onFetchDataCorrespondanceItems}
+            onFetchDataCompanyB={this.onFetchDataCompanyBItems}
+            updateCorrespondence={this.updateCorrespondenceItems}
+            pagination={false}
+            companyAlabel="Products"
+            companyBlabel="Products"
+            columnName="Description"
+          />
+        ) : null}
+
+        {category === 'entities' ? (
+          <MasterDataTable
+            onFetchDataCompanyA={this.onFetchDataCompanyAParties}
+            onFetchDataCorrespondance={this.onFetchDataCorrespondanceParties}
+            onFetchDataCompanyB={this.onFetchDataCompanyBParties}
+            updateCorrespondence={this.updateCorrespondenceParties}
+            pagination={false}
+            companyAlabel="Suppliers"
+            companyBlabel="Customers"
+            columnName="Name"
+          />
+        ) : null}
 
       </Container>
     );
-
   }
 }
 
