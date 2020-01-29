@@ -10,6 +10,8 @@ This project consists in the development of a customizable interface to handle a
 The interface should host and display detailed data about all operational aspects of the transaction, such as stock, product categories, and vending platforms. 
 Another fundamental feature of the project is providing a user-friendly experience that allows the user a better understanding of the sales-purchase flow.
 
+More information in the [final report](https://github.com/susanalima/FEUP-SINF/blob/master/docs/4MIEIC05_G_X_DELIVERABLE2.2__FINALDOC.pdf).
+
 ### Install
 
 `cd backend`
