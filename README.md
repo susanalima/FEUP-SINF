@@ -43,9 +43,6 @@ PG admin: http://0.0.0.0/5051
 
 ![](https://github.com/susanalima/FEUP-SINF/blob/master/docs/screen%20captures/screencapture-localhost-3001-logs-2019-12-19-08_46_03.png)
 
-#### Settings
-
-![](https://github.com/susanalima/FEUP-SINF/blob/master/docs/screen%20captures/screencapture-localhost-3001-settings-2019-12-19-08_46_53.png)
 
 #### New Process
 
